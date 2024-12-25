@@ -10,6 +10,7 @@ import logging
 import tempfile
 from datetime import timedelta
 import shutil
+from urllib.parse import unquote
 app = Flask(__name__)
 scheduler = APScheduler()
 app.secret_key = 'your-secret-key'  # Replace with a strong, unique key
@@ -1115,6 +1116,7 @@ def View_Game_Page(game_name):
      if request.method=='GET':
         with sqlite3.connect(TMP_DB_PATH) as db:
             c = db.cursor()
+            game_name=unquote(game_name)
             c.execute("SELECT * from game_list where game_name = ?", (game_name,))
             
             game_info = c.fetchall()
@@ -1621,6 +1623,7 @@ def update_FriendRequest():
 def view_friend_profile(friend_username):
      with sqlite3.connect(TMP_DB_PATH) as db:
         c = db.cursor()
+        friend_username=unquote(friend_username)
         c.execute("SELECT balance FROM WALLET_BALANCE WHERE username = ?",(session['username'],))
         balance = round(c.fetchone()[0],2)
         c.execute("SELECT email,account_status FROM USERS WHERE username=?",(friend_username,))
@@ -1635,6 +1638,7 @@ def view_friend_profile(friend_username):
 @login_required('developer')
 def uploadgamedta_formpage(game_name):
      with sqlite3.connect(TMP_DB_PATH) as db:
+        game_name=unquote(game_name)
 
         
         # Pass the friend's username to the template
@@ -1643,6 +1647,7 @@ def uploadgamedta_formpage(game_name):
 @app.route('/ViewBuyerProfile/<buyer_username>')
 def view_buyer_profile(buyer_username):
      with sqlite3.connect(TMP_DB_PATH) as db:
+        buyer_username=unquote(buyer_username)
         c = db.cursor()
         c.execute("SELECT balance FROM WALLET_BALANCE WHERE username = ?",(session['username'],))
         balance = round(c.fetchone()[0],2)
