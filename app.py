@@ -14,8 +14,8 @@ from urllib.parse import unquote
 app = Flask(__name__)
 scheduler = APScheduler()
 app.secret_key = 'your-secret-key'  # Replace with a strong, unique key
-UPLOAD_FOLDER = os.path.join(tempfile.gettempdir(), "uploads")
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+UPLOAD_FOLDER = 'static/uploads'
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)  # Create the folder if it doesn't exist
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 #gamelord
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
